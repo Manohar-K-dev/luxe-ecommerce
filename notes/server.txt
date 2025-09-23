@@ -1,0 +1,41 @@
+MERN Stack:
+    User/Admin:
+        User Register with Email OTP [ Login, Register ]
+______________________________
+
+    User:
+        Cart
+        Online Payment
+    ______________________________
+    
+    Admin:
+        Product CURD
+
+______________________________
+
+Install for Server:
+    npm init -y [ package.json ]
+    npm install express [ Express installation ]
+    npm install nodemon -D [ nodemon(auto run) -D(development dependency) ]
+
+    ----------------------------------
+    Package.json file Change:
+        "main": "server.js",
+        "type": "module",
+        "scripts": {
+            "start": "node server.js",
+            "dev": "nodemon server.js"
+        },
+    -----------------------------------
+    npm install dotenv [ secure secret codes (.env file) ]
+    npm install mongoose [ mongoDB connection ]
+    npm install bcryptjs [ Save Password DB in encrypt ]
+    npm install jsonwebtoken [ login system (auth tokens) ]
+    npm install nodemailer [ Send Emails ]
+    ___________________________________________
+
+File Management:
+    server.js:  [ Main File ]
+    DataBase:   [ DataBase connection ]
+    Model:      [ DataBase Design(Schema) {User Design, Product Design} ]
+    Controller: [ Client(Frontend) -> Backend(Server) ]

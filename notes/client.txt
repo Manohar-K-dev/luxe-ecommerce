@@ -1,0 +1,7 @@
+// First Create & Install dependency:
+
+    vite React app for client: npm Create vite@latest [ first create react(vite) app Name is - client ]
+    node modules: npm install [ default node modules ]
+    react router: npm install react-router-dom [ router ]
+    react icons: npm react-icons [ icons ]
+    TailwindCSS: npm install tailwindcss @tailwindcss/vite [ tailwindcss ]

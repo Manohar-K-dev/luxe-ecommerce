@@ -1,11 +1,18 @@
-# Node
-server/node_modules
-client/node_modules
+# Root ignore
+node_modules
+dist
+build
 .env
 
-# Logs
-logs
-*.log
+# Client
+client/node_modules
+client/dist
+client/.env
 
-# Build
-client/build
+# Server
+server/node_modules
+server/.env
+
+# Logs
+*.log
+logs

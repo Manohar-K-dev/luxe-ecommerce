@@ -1,14 +1,16 @@
 import React from "react";
 // ui
-import Toggle from "../ui/Toggle";
+import Toggle from "../ui/Toggle.jsx";
 
 const Settings = () => {
   return (
     <>
-      <h1 className="font-bold text-2xl tracking-wide">Account Settings</h1>
-      <div className="flex flex-col gap-8 mt-6">
+      <h1 className="font-bold text-xl md:text-2xl tracking-wide mb-4">
+        Account Settings
+      </h1>
+      <div className="flex flex-col text-sm md:text-base gap-4 md:gap-8">
         <div className="flex flex-col gap-4">
-          <h1 className="text-lg font-semibold tracking-[0.5px]">
+          <h1 className="text-base md:text-lg font-semibold tracking-wide">
             Notification
           </h1>
           <div className="flex justify-between items-center">
@@ -25,7 +27,9 @@ const Settings = () => {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <h1 className="text-lg font-semibold tracking-[0.5px]">Privacy</h1>
+          <h1 className="text-base md:text-lg font-semibold tracking-[0.5px]">
+            Privacy
+          </h1>
           <div className="flex justify-between items-center">
             <h1>Make profile public</h1>
             <Toggle id="profilePublic" defaultValue={false} />
@@ -36,16 +40,16 @@ const Settings = () => {
           </div>
         </div>
         <div className="flex flex-col items-start gap-4">
-          <h1 className="text-lg font-semibold tracking-[0.5px]">
+          <h1 className="text-base md:text-lg font-semibold tracking-[0.5px]">
             Change Password
           </h1>
-          <form action="" className="grid gap-6">
+          <form action="" className="grid gap-3 md:gap-6">
             <input
               type="password"
               placeholder="Current Password"
               className="p-3 border rounded-lg"
             />
-            <div className="flex gap-4">
+            <div className="flex gap-3 md:gap-4 flex-col md:flex-row">
               <input
                 type="password"
                 placeholder="New Password"

@@ -12,13 +12,13 @@ const Toggle = ({ id, defaultValue }) => {
 
   return (
     <button
-      className={`rounded-full w-12 h-6 flex items-center transition-colors duration-300 ${
+      className={`rounded-full w-10 md:w-12 h-5 md:h-6 flex items-center transition-colors duration-300 ${
         isOn ? "bg-luxe" : "bg-gray-600"
       }`}
       onClick={() => setIsOn(!isOn)}
     >
       <div
-        className={`bg-white rounded-full w-5 h-5 mx-[2px] transform transition-transform duration-300 ${
+        className={`bg-white rounded-full w-4 h-4 md:w-5 md:h-5 md:mx-[2px] transform transition-transform duration-300 ${
           isOn ? "translate-x-6" : "translate-x-0"
         }`}
       ></div>

@@ -25,7 +25,7 @@ const Product = ({
 
   return (
     <div
-      className={`relative grid cursor-pointer text-white rounded-xl overflow-hidden shadow-md md:hover:shadow-xl duration-300 ${
+      className={`relative h-80 w-60 md:h-full md:w-full grid cursor-pointer text-white rounded-xl overflow-hidden shadow-md md:hover:shadow-xl duration-300 ${
         stock > 0 ? "opacity-100" : "opacity-80"
       }`}
     >
@@ -52,8 +52,12 @@ const Product = ({
         </div>
         <div className="bg-gray-300 px-4 py-2 flex flex-col gap-5">
           <div className="flex flex-col gap-2">
-            <h2 className="text-gray-800 text-lg font-bold">{productName}</h2>
-            <p className="text-gray-600">{productDescription}</p>
+            <h2 className="text-gray-800 md:text-lg font-semibold md:font-bold">
+              {productName}
+            </h2>
+            <p className="text-gray-600 hidden md:block">
+              {productDescription}
+            </p>
           </div>
           <div className="flex justify-between items-center">
             <h3 className="text-luxe md:text-lg font-bold">

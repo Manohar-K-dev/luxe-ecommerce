@@ -16,7 +16,7 @@ const BestSeller = () => {
 
   return (
     <>
-      <section className="bg-gray-300 px-8 py-4 xs:py-6 ss:px-12 ss:py-10 sm:px-16 sm:py-12 lg:px-28 xl:px-40 xl:py-20">
+      <section className="bg-gray-200 px-8 py-4 xs:py-6 ss:px-12 ss:py-10 sm:px-16 sm:py-12 lg:px-28 xl:px-40 xl:py-20">
         <div>
           <Title text1={"BEST"} text2={"SELLER"} />
         </div>

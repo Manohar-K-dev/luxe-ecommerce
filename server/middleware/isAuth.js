@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { User } from "../model/User.js";
+import userModel from "../model/userModel.js";
 
 export const isAuth = async (req, res, next) => {
   try {
@@ -12,7 +12,7 @@ export const isAuth = async (req, res, next) => {
 
     // Decode: JWT Signed
     const decodedData = jwt.verify(token, process.env.JWT_TOKEN);
-    req.user = await User.findById(decodedData._id);
+    req.user = await userModel.findById(decodedData._id);
     next();
   } catch (error) {
     return res.status(403).json({

@@ -29,9 +29,11 @@ Install for Server:
     -----------------------------------
     npm install dotenv [ secure secret codes (.env file) ]
     npm install mongoose [ mongoDB connection ]
+    npm install cors [ connect (Frontend & Backend) ]
     npm install bcryptjs [ Save Password DB in encrypt ]
     npm install jsonwebtoken [ login system (auth tokens) ]
     npm install nodemailer [ Send Emails ]
+    npm install validator [ validate ]
     ___________________________________________
 
 File Management:
@@ -39,3 +41,20 @@ File Management:
     DataBase:   [ DataBase connection ]
     Model:      [ DataBase Design(Schema) {User Design, Product Design} ]
     Controller: [ Client(Frontend) -> Backend(Server) ]
+
+
+All Dependency for LUXE: 
+        npm i (or) npm install -> One Time Install
+                express, 
+                nodemon -D, 
+                dotenv, 
+                mongoose, 
+                cors, 
+                bcrypt, 
+                jsonwebtoken, 
+                nodemailer, 
+                multer, 
+                razorpay, 
+                stripe, 
+                validator, 
+                cloudinary

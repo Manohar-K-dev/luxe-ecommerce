@@ -71,7 +71,13 @@ const Navbar = () => {
           onClick={() => navigate("/cart")}
         >
           <RiShoppingCartLine />
-          <span className=" absolute -top-3 -right-3 bg-amber-600 text-white font-bold rounded-full flex items-center justify-center text-[0.6rem] sm:text-[0.7rem] md:text-[0.8rem] w-[16px] h-[16px] sm:w-[18px] sm:h-[18px] md:w-[20px] md:h-[20px]">
+          <span
+            className={`${
+              totalQuantity === 0
+                ? "hidden"
+                : "absolute -top-3 -right-3 bg-amber-600 text-white font-bold rounded-full flex items-center justify-center text-[0.6rem] sm:text-[0.7rem] md:text-[0.8rem] w-[16px] h-[16px] sm:w-[18px] sm:h-[18px] md:w-[20px] md:h-[20px]"
+            }`}
+          >
             {totalQuantity > 9 ? "9+" : totalQuantity}
             {/* {0} */}
           </span>

@@ -10,11 +10,11 @@ const productSchema = new mongoose.Schema(
     mainCategory: { type: String, require: true },
     category: { type: String, require: true },
     subCategory: { type: String, require: true },
+    colors: { type: Array, require: true },
     sizes: { type: Array, require: true },
-    colors: { type: Array },
-    stock: { type: Number },
     bestseller: { type: Boolean },
-    // date: { type: Number, require: true },
+    date: { type: Number, require: true },
+    // stock: { type: Number },
   },
   { timestamps: true }
 );

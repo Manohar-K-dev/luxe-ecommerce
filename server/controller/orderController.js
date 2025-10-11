@@ -18,18 +18,6 @@ if (!stripeSecretKey) {
 // Gateway initialize
 const stripe = new Stripe(stripeSecretKey);
 // // Initialize Stripe only if API key exists
-// let stripe;
-// try {
-//   if (process.env.STRIPE_SECRET_KEY) {
-//     const Stripe = (await import("stripe")).default;
-//     stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-//     console.log("Stripe initialized successfully");
-//   } else {
-//     console.warn("STRIPE_SECRET_KEY not found in environment variables");
-//   }
-// } catch (error) {
-//   console.error("Error initializing Stripe:", error);
-// }
 
 // Placing Orders using COD Method
 const placeOrder = async (req, res) => {
@@ -59,66 +47,7 @@ const placeOrder = async (req, res) => {
   }
 };
 
-// // Placing Orders using Stripe Method
-// const placeOrderStripe = async (req, res) => {
-//   try {
-//     const { userId, items, amount, address } = req.body;
-//     const { origin } = req.headers;
-
-//     const orderData = {
-//       userId,
-//       items,
-//       address,
-//       amount,
-//       paymentMethod: "COD",
-//       payment: false,
-//       date: Date.now(),
-//     };
-
-//     const newOrder = new orderModel(orderData);
-//     await newOrder.save();
-
-//     const line_items = items.map((item) => ({
-//       price_data: {
-//         currency: currency,
-//         product_data: {
-//           name: item.name,
-//         },
-//         unit_amount: item.price * 100,
-//       },
-//       quantity: item.quantity,
-//     }));
-
-//     line_items.push({
-//       price_data: {
-//         currency: currency,
-//         product_data: {
-//           name: "Delivery Charges",
-//         },
-//         unit_amount: deliveryCharge * 100,
-//       },
-//       quantity: 1,
-//     });
-
-//     const session = await stripe.checkout.sessions.create({
-//       success_url: `${origin}/verify?success=true&orderId=${newOrder._id}`,
-//       cancel_url: `${origin}/verify?success=false&orderId=${newOrder._id}`,
-//       line_items,
-//       mode: "payment",
-//     });
-
-//     return res.status(200).json({
-//       success: true,
-//       session_url: session.url,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
-
+// Placing Orders using Stripe Method
 export const placeOrderStripe = async (req, res) => {
   try {
     const { userId, items, amount, address } = req.body;

@@ -60,6 +60,15 @@ connectCloudinary();
 // Middlewares
 app.use(express.json());
 app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "https://luxe-ecommerce.onrender.com", // Client
+      "https://luxe-admin-fyo6.onrender.com", // Admin
+    ],
+    credentials: true,
+  })
+);
 
 // API endpoints
 app.use("/api/user", userRouter);

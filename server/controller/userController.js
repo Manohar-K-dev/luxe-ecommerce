@@ -140,15 +140,27 @@ const registerUser = async (req, res) => {
       { expiresIn: "5m" }
     );
 
-    console.log("🔍 TEMPORARILY SKIPPING EMAIL...");
-    // TEMPORARY: Skip email for testing
-    // const emailContent = `Hello, Your One-Time Password (OTP) for LUXE is: ${otp} ⚠️ This OTP is valid for only 5 minutes. Do not share it with anyone for security reasons. If you did not request this, please ignore this email. - Team LUXE`;
+    console.log("🔍 Attempting to send email...");
+    try {
+      const emailContent = `Hello, Your One-Time Password (OTP) for LUXE is: ${otp} ⚠️ This OTP is valid for only 5 minutes. Do not share it with anyone for security reasons. If you did not request this, please ignore this email. - Team LUXE`;
 
-    // await sendMail(
-    //   email,
-    //   "LUXE: OTP for Registration (Valid for 5 Minutes)",
-    //   emailContent
-    // );
+      await sendMail(
+        email,
+        "LUXE: OTP for Registration (Valid for 5 Minutes)",
+        emailContent
+      );
+
+      console.log("✅ Email sent successfully");
+    } catch (emailError) {
+      console.error("❌ Email failed, but continuing with OTP in response");
+      // Even if email fails, return OTP in response for testing
+      return res.status(200).json({
+        success: true,
+        message: "Email service temporarily unavailable. Use this OTP:",
+        token,
+        otp: otp,
+      });
+    }
 
     console.log("✅ SIGNUP SUCCESS - OTP generated (email skipped)");
     return res.status(200).json({

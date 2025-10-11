@@ -25,19 +25,26 @@ import { createTransport } from "nodemailer";
 const sendMail = async (email, subject, text) => {
   try {
     console.log("📧 Attempting to send email to:", email);
-    console.log("📧 Using GMAIL:", process.env.GMAIL);
 
     const transport = createTransport({
       host: "smtp.gmail.com",
-      port: 587, // Changed to 587 (TLS)
-      secure: false, // Use TLS
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.GMAIL,
         pass: process.env.GPASS,
       },
+      // Add connection timeout settings
+      connectionTimeout: 10000, // 10 seconds
+      socketTimeout: 15000, // 15 seconds
+      greetingTimeout: 10000, // 10 seconds
+      // Add TLS options
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
 
-    // Verify connection
+    console.log("📧 Verifying SMTP connection...");
     await transport.verify();
     console.log("✅ SMTP connection verified");
 
@@ -48,6 +55,7 @@ const sendMail = async (email, subject, text) => {
       text: text,
     };
 
+    console.log("📧 Sending email...");
     const result = await transport.sendMail(mailOptions);
     console.log("✅ Email sent successfully:", result.messageId);
 

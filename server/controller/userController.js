@@ -4,34 +4,113 @@ import jwt from "jsonwebtoken";
 import userModel from "../model/userModel.js";
 import sendMail from "../middleware/sendMail.js";
 
-// Registration: New User
+// // Registration: New User
+// const registerUser = async (req, res) => {
+//   try {
+//     const { name, email, password, confirmPassword } = req.body;
+
+//     if (!name || !email || !password || !confirmPassword) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "All fields are required",
+//       });
+//     }
+
+//     let existingUser = await userModel.findOne({ email });
+//     if (existingUser) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "User already exists, please login",
+//       });
+//     }
+
+//     if (!validator.isEmail(email)) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Please enter a valid email address",
+//       });
+//     }
+
+//     if (!validator.isStrongPassword(password)) {
+//       return res.status(400).json({
+//         success: false,
+//         message:
+//           "Password must be at least 8 characters long and include lowercase, uppercase, number and symbol",
+//       });
+//     }
+
+//     if (password !== confirmPassword) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Passwords do not match",
+//       });
+//     }
+
+//     const otp = Math.floor(100000 + Math.random() * 900000);
+//     const hashedPassword = await bcrypt.hash(password, 10);
+
+//     const token = jwt.sign(
+//       { user: { name, email, password: hashedPassword }, otp },
+//       process.env.JWT_SECRET,
+//       { expiresIn: "5m" }
+//     );
+
+//     const emailContent = `Hello, Your One-Time Password (OTP) for LUXE is: ${otp} ⚠️ This OTP is valid for only 5 minutes. Do not share it with anyone for security reasons. If you did not request this, please ignore this email. - Team LUXE`;
+
+//     await sendMail(
+//       email,
+//       "LUXE: OTP for Registration (Valid for 5 Minutes)",
+//       emailContent
+//     );
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "OTP sent to your email",
+//       token,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({ success: false, message: error.message });
+//   }
+// };
+
 const registerUser = async (req, res) => {
   try {
+    console.log("🔍 SIGNUP STARTED - Request body:", req.body);
+
     const { name, email, password, confirmPassword } = req.body;
 
+    // Add validation logs
+    console.log("🔍 Validating fields...");
     if (!name || !email || !password || !confirmPassword) {
+      console.log("❌ Missing fields");
       return res.status(400).json({
         success: false,
         message: "All fields are required",
       });
     }
 
+    console.log("🔍 Checking existing user...");
     let existingUser = await userModel.findOne({ email });
     if (existingUser) {
+      console.log("❌ User already exists");
       return res.status(400).json({
         success: false,
         message: "User already exists, please login",
       });
     }
 
+    console.log("🔍 Validating email...");
     if (!validator.isEmail(email)) {
+      console.log("❌ Invalid email");
       return res.status(400).json({
         success: false,
         message: "Please enter a valid email address",
       });
     }
 
+    console.log("🔍 Validating password...");
     if (!validator.isStrongPassword(password)) {
+      console.log("❌ Weak password");
       return res.status(400).json({
         success: false,
         message:
@@ -39,37 +118,59 @@ const registerUser = async (req, res) => {
       });
     }
 
+    console.log("🔍 Checking password match...");
     if (password !== confirmPassword) {
+      console.log("❌ Passwords don't match");
       return res.status(400).json({
         success: false,
         message: "Passwords do not match",
       });
     }
 
+    console.log("🔍 Generating OTP...");
     const otp = Math.floor(100000 + Math.random() * 900000);
+
+    console.log("🔍 Hashing password...");
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    console.log("🔍 Generating JWT token...");
     const token = jwt.sign(
       { user: { name, email, password: hashedPassword }, otp },
       process.env.JWT_SECRET,
       { expiresIn: "5m" }
     );
 
-    const emailContent = `Hello, Your One-Time Password (OTP) for LUXE is: ${otp} ⚠️ This OTP is valid for only 5 minutes. Do not share it with anyone for security reasons. If you did not request this, please ignore this email. - Team LUXE`;
+    console.log("🔍 TEMPORARILY SKIPPING EMAIL...");
+    // TEMPORARY: Skip email for testing
+    // const emailContent = `Hello, Your One-Time Password (OTP) for LUXE is: ${otp} ⚠️ This OTP is valid for only 5 minutes. Do not share it with anyone for security reasons. If you did not request this, please ignore this email. - Team LUXE`;
 
-    await sendMail(
-      email,
-      "LUXE: OTP for Registration (Valid for 5 Minutes)",
-      emailContent
-    );
+    // await sendMail(
+    //   email,
+    //   "LUXE: OTP for Registration (Valid for 5 Minutes)",
+    //   emailContent
+    // );
 
+    console.log("✅ SIGNUP SUCCESS - OTP generated (email skipped)");
     return res.status(200).json({
       success: true,
       message: "OTP sent to your email",
       token,
+      otp: otp, // Include OTP in response for testing
     });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    console.error("❌ SIGNUP ERROR DETAILS:");
+    console.error("Error message:", error.message);
+    console.error("Error stack:", error.stack);
+    console.error(
+      "Environment check - JWT_SECRET exists:",
+      !!process.env.JWT_SECRET
+    );
+    console.error("Environment check - GMAIL exists:", !!process.env.GMAIL);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error during registration",
+    });
   }
 };
 

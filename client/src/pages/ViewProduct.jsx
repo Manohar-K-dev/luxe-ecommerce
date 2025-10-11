@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 // npm for Notification
 import { toast } from "react-toastify";
 // Context
-import { ShopContext } from "../context/CreateContext.js";
+// import { ShopContext } from "../context/CreateContext.js";
 // Icons
 import {
   RiStarFill,
@@ -15,6 +15,7 @@ import {
 import ColorSelector from "../components/ui/ColorSelector.jsx";
 import SizeSelector from "../components/ui/SizeSelector.jsx";
 import ProductGallery from "../components/ui/ProductGallery.jsx";
+import { ShopContext } from "../context/ShopContext.jsx";
 
 const ViewProduct = () => {
   const { productId } = useParams();

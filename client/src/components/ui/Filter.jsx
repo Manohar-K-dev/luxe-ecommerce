@@ -1,7 +1,8 @@
 import React, { useContext, useState } from "react";
 import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri";
-import { ShopContext } from "../../context/CreateContext.js";
+// import { ShopContext } from "../../context/CreateContext.js";
 import FilterSection from "../sections/FilterSection.jsx";
+import { ShopContext } from "../../context/ShopContext.jsx";
 
 const Filter = ({ selectedFilters, setSelectedFilters }) => {
   const { currency } = useContext(ShopContext);

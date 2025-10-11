@@ -2,8 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 // Components
 import Product from "../ui/Product.jsx";
 import Title from "../Title.jsx";
+import { ShopContext } from "../../context/ShopContext.jsx";
 // Context
-import { ShopContext } from "../../context/CreateContext.js";
+// import { ShopContext } from "../../context/CreateContext.js";
 
 const BestSeller = () => {
   const { products } = useContext(ShopContext);
@@ -12,7 +13,7 @@ const BestSeller = () => {
   useEffect(() => {
     const bestProduct = products.filter((item) => item.bestseller);
     setBestSeller(bestProduct.slice(0, 4));
-  }, []);
+  }, [products]);
 
   return (
     <>

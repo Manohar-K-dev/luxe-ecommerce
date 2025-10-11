@@ -1,11 +1,124 @@
+// import { v2 as cloudinary } from "cloudinary";
+// // Model
+// import productModel from "../model/productModel.js";
+
+// // Create: Add new Products
+// const addProduct = async (req, res) => {
+//   try {
+//     // Request: data from body
+//     const {
+//       name,
+//       description,
+//       price,
+//       oldPrice,
+//       colors,
+//       sizes,
+//       mainCategory,
+//       category,
+//       subCategory,
+//       bestseller,
+//       stock,
+//     } = req.body;
+
+//     // Request: images from file [multer]
+//     const image1 = req.files.image1 && req.files.image1[0];
+//     const image2 = req.files.image2 && req.files.image2[0];
+//     const image3 = req.files.image3 && req.files.image3[0];
+//     const image4 = req.files.image4 && req.files.image4[0];
+
+//     const images = [image1, image2, image3, image4].filter(
+//       (item) => item !== undefined
+//     );
+
+//     let imagesUrl = await Promise.all(
+//       images.map(async (item) => {
+//         let result = await cloudinary.uploader.upload(item.path, {
+//           resource_type: "image",
+//         });
+//         return result.secure_url;
+//       })
+//     );
+
+//     const productData = {
+//       name,
+//       description,
+//       price: Number(price),
+//       oldPrice: Number(oldPrice),
+//       image: imagesUrl,
+//       mainCategory,
+//       category,
+//       subCategory,
+//       colors: JSON.parse(colors),
+//       sizes: JSON.parse(sizes),
+//       bestseller: bestseller === "true" ? true : false,
+//       stock,
+//       // date: Date.now(),
+//     };
+
+//     const product = new productModel(productData);
+//     await product.save();
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "Product Added",
+//     });
+//   } catch (error) {
+//     return res.status(500).json({ success: false, message: error.message });
+//   }
+// };
+
+// // Update: List all Products
+// const listProducts = async (req, res) => {
+//   try {
+//     const products = await productModel.find({});
+
+//     return res.status(200).json({
+//       success: true,
+//       products,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({ success: false, message: error.message });
+//   }
+// };
+
+// // Remove:  Products
+// const removeProduct = async (req, res) => {
+//   try {
+//     await productModel.findByIdAndDelete(req.body.id);
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "Product Removed",
+//     });
+//   } catch (error) {
+//     return res.status(500).json({ success: false, message: error.message });
+//   }
+// };
+
+// // View: single Product
+// const singleProduct = async (req, res) => {
+//   try {
+//     const { productId } = req.body;
+
+//     const product = await productModel.findById(productId);
+
+//     return res.status(200).json({
+//       success: true,
+//       product,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({ success: false, message: error.message });
+//   }
+// };
+
+// export { addProduct, listProducts, removeProduct, singleProduct };
+
 import { v2 as cloudinary } from "cloudinary";
-// Model
 import productModel from "../model/productModel.js";
 
 // Create: Add new Products
 const addProduct = async (req, res) => {
   try {
-    // Request: data from body
     const {
       name,
       description,
@@ -17,9 +130,9 @@ const addProduct = async (req, res) => {
       category,
       subCategory,
       bestseller,
+      stock,
     } = req.body;
 
-    // Request: images from file [multer]
     const image1 = req.files.image1 && req.files.image1[0];
     const image2 = req.files.image2 && req.files.image2[0];
     const image3 = req.files.image3 && req.files.image3[0];
@@ -49,29 +162,64 @@ const addProduct = async (req, res) => {
       subCategory,
       colors: JSON.parse(colors),
       sizes: JSON.parse(sizes),
-      bestseller: bestseller === "true" ? true : false,
-      date: Date.now(),
+      bestseller: bestseller === "true",
+      stock,
     };
-
-    console.log(productData);
 
     const product = new productModel(productData);
     await product.save();
 
-    res.status(200).json({});
+    return res.status(200).json({
+      success: true,
+      message: "Product added successfully",
+    });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// Update: List all Products
-const listProducts = async (req, res) => {};
+// Get: List all Products
+const listProducts = async (req, res) => {
+  try {
+    const products = await productModel.find({});
 
-// Remove:  Products
-const removeProduct = async (req, res) => {};
+    return res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
 
-// View: single Product
-const singleProduct = async (req, res) => {};
+// Delete: Remove Product
+const removeProduct = async (req, res) => {
+  try {
+    await productModel.findByIdAndDelete(req.body.id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Product removed successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Get: Single Product
+const singleProduct = async (req, res) => {
+  try {
+    const { productId } = req.body;
+
+    const product = await productModel.findById(productId);
+
+    return res.status(200).json({
+      success: true,
+      product,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 export { addProduct, listProducts, removeProduct, singleProduct };

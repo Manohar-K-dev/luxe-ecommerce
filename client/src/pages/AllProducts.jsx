@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 // Context
-import { ShopContext } from "../context/CreateContext.js";
+// import { ShopContext } from "../context/CreateContext.js";
 // Components
 import Title from "../components/Title.jsx";
 import Filter from "../components/ui/Filter.jsx";
 import Sort from "../components/ui/Sort.jsx";
 import Product from "../components/ui/Product.jsx";
+import { ShopContext } from "../context/ShopContext.jsx";
 
 const AllProducts = () => {
   const { products, currency } = useContext(ShopContext);

@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 // icons
 import { RiAddLine, RiDeleteBinLine, RiSubtractLine } from "react-icons/ri";
-// Context
-import { ShopContext } from "../../context/CreateContext.js";
+import { ShopContext } from "../../context/ShopContext";
 
 const CartProducts = () => {
   const {
@@ -13,6 +12,7 @@ const CartProducts = () => {
     delivery_fee,
     addToCart,
     removeFromCart,
+    removeItemFromCart,
     cartItems,
   } = useContext(ShopContext);
 
@@ -30,15 +30,18 @@ const CartProducts = () => {
       for (let size in cartItems[itemId]) {
         for (let color in cartItems[itemId][size]) {
           let quantity = cartItems[itemId][size][color];
-          let product = products.find((p) => p._id === itemId);
-          if (product) {
-            temp.push({
-              ...product,
-              size,
-              color,
-              quantity,
-            });
-            subtotalCalc += product.price * quantity;
+          // Only include items with quantity > 0
+          if (quantity > 0) {
+            let product = products.find((p) => p._id === itemId);
+            if (product) {
+              temp.push({
+                ...product,
+                size,
+                color,
+                quantity,
+              });
+              subtotalCalc += product.price * quantity;
+            }
           }
         }
       }
@@ -61,6 +64,40 @@ const CartProducts = () => {
     setTotal(subtotalCalc + shippingCalc + taxCalc);
   }, [cartItems, products, delivery_fee]);
 
+  // Enhanced delete function
+  const handleDeleteItem = async (cartProduct) => {
+    try {
+      await removeItemFromCart(
+        cartProduct._id,
+        cartProduct.size,
+        cartProduct.color
+      );
+
+      toast.success(`Removed ${cartProduct.name} from cart!`, {
+        position: "bottom-right",
+        autoClose: 2000,
+      });
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      toast.error("Failed to remove item from cart");
+    }
+  };
+
+  // Handle quantity decrease
+  const handleDecreaseQuantity = (cartProduct) => {
+    if (cartProduct.quantity > 1) {
+      removeFromCart(cartProduct._id, cartProduct.size, cartProduct.color, 1);
+    } else {
+      // If quantity is 1, remove completely
+      handleDeleteItem(cartProduct);
+    }
+  };
+
+  // Handle quantity increase
+  const handleIncreaseQuantity = (cartProduct) => {
+    addToCart(cartProduct._id, cartProduct.size, cartProduct.color, 1);
+  };
+
   return (
     <>
       <div className="px-6 py-3 shadow rounded-lg">
@@ -79,6 +116,7 @@ const CartProducts = () => {
                   src={cartProduct.image[0]}
                   alt={cartProduct.name}
                   className="h-24 object-cover rounded-lg cursor-pointer"
+                  onClick={() => navigate(`/product/${cartProduct._id}`)}
                 />
                 <div>
                   <h1 className="font-semibold text-lg">{cartProduct.name}</h1>
@@ -94,51 +132,28 @@ const CartProducts = () => {
                 </div>
 
                 {/* Quantity buttons */}
-
                 <div className="ml-auto flex gap-4 items-center">
                   <div className="flex items-center border rounded-lg h-10">
                     <button
-                      onClick={() => {
-                        if (cartProduct.quantity > 1) {
-                          removeFromCart(
-                            cartProduct._id,
-                            cartProduct.size,
-                            cartProduct.color,
-                            1 // decrease by 1
-                          );
-                        }
-                      }}
-                      className="px-3 h-full place-content-center cursor-pointer"
+                      onClick={() => handleDecreaseQuantity(cartProduct)}
+                      className="px-3 h-full place-content-center cursor-pointer hover:bg-gray-100 transition duration-200"
                     >
                       <RiSubtractLine />
                     </button>
-                    <div className="border-x px-3 h-full place-content-center">
+                    <div className="border-x px-3 h-full place-content-center min-w-[40px] text-center">
                       {cartProduct.quantity}
                     </div>
                     <button
-                      onClick={() =>
-                        addToCart(
-                          cartProduct._id,
-                          cartProduct.size,
-                          cartProduct.color,
-                          1 // increase by 1
-                        )
-                      }
-                      className="px-3 py-2 h-full place-content-center cursor-pointer"
+                      onClick={() => handleIncreaseQuantity(cartProduct)}
+                      className="px-3 py-2 h-full place-content-center cursor-pointer hover:bg-gray-100 transition duration-200"
                     >
                       <RiAddLine />
                     </button>
                   </div>
                   <RiDeleteBinLine
-                    onClick={() =>
-                      removeFromCart(
-                        cartProduct._id,
-                        cartProduct.size,
-                        cartProduct.color,
-                        cartProduct.quantity // remove ALL at once
-                      )
-                    }
-                    className="text-red-600 text-lg cursor-pointer md:hover:text-red-800"
+                    onClick={() => handleDeleteItem(cartProduct)}
+                    className="text-red-600 text-lg cursor-pointer md:hover:text-red-800 transition duration-200"
+                    title="Remove from cart"
                   />
                 </div>
               </div>
@@ -147,7 +162,6 @@ const CartProducts = () => {
       </div>
 
       {/* Order Summary */}
-
       <div className="flex flex-col gap-4 shadow px-6 py-3 rounded-lg">
         <h1 className="text-xl font-semibold mb-3">Order Summary</h1>
         <div className="grid gap-4 mb-3">
@@ -182,9 +196,9 @@ const CartProducts = () => {
         <input
           type="text"
           placeholder="Promo Code"
-          className="rounded-xl border px-4 py-3 text-sm"
+          className="rounded-xl border px-4 py-3 text-sm focus:outline-none focus:border-luxe transition duration-300"
         />
-        <button className="text-luxe border-luxe border rounded-xl py-3 hover:bg-luxe hover:text-white">
+        <button className="text-luxe border-luxe border rounded-xl py-3 hover:bg-luxe hover:text-white transition duration-300">
           Apply Code
         </button>
         <button
@@ -198,7 +212,7 @@ const CartProducts = () => {
               navigate("/place-order");
             }
           }}
-          className="bg-luxe text-white rounded-xl py-4 hover:opacity-90"
+          className="bg-luxe text-white rounded-xl py-4 hover:opacity-90 transition duration-300 font-semibold"
         >
           Proceed to Checkout
         </button>
